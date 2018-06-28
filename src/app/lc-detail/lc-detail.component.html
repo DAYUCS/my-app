@@ -1,0 +1,14 @@
+<form [formGroup]="lcForm" (ngSubmit)="onSubmit()" novalidate>
+  <div formGroupName="lcData" novalidate>
+    <input formControlName="lc_ref_no">
+    <select formControlName="lc_customer_no">
+      <option *ngFor="let customer of customers" [value]="customer.id">{{customer.name}}</option>
+    </select>
+    <input formControlName="lc_amt">
+    <input formControlName="lc_balance">
+  </div>
+  <button type="submit" [disabled]="lcForm.pristine">Save</button>
+  <button type="reset" (click)="revert()" [disabled]="lcForm.pristine">Revert</button>
+</form>
+
+<p>Form value: {{ lcForm.value | json }}</p>
