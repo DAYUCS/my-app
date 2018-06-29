@@ -1,30 +1,39 @@
 <form [formGroup]="lcForm" (ngSubmit)="onSubmit()">
-  <div formGroupName="lcData">
-    <div class="form-group">
-      <label class="center-block">L/C Reference No.:
-        <input formControlName="lc_ref_no">
-      </label>
-    </div>
-    <div class="form-group">
-      <label class="center-block">Customer:
-        <select formControlName="lc_customer_no">
-          <option *ngFor="let customer of customers" [value]="customer.id">{{customer.name}}</option>
-        </select>
-      </label>
-    </div>
-    <div class="form-group">
-      <label class="center-block">L/C Amount:
-        <input formControlName="lc_amt">
-      </label>
-    </div>
-    <div class="form-group">
-      <label class="center-block">L/C Balance:
-        <input formControlName="lc_balance">
-      </label>
-    </div>
+  <div class="form-group">
+    <label class="center-block">L/C Reference No.:
+      <input formControlName="lc_ref_no">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">Customer:
+      <select formControlName="lc_customer_no">
+        <option *ngFor="let customer of customers" [value]="customer.id">{{customer.name}}</option>
+      </select>
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">L/C Amount:
+      <input formControlName="lc_amt">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">L/C Balance:
+      <input formControlName="lc_balance">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">L/C Temp 001:
+      <input formControlNamme="lc_001">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">L/C Temp 002:
+      <input formControlNamme="lc_002">
+    </label>
   </div>
   <button type="submit" [disabled]="lcForm.pristine">Save</button>
   <button type="reset" (click)="revert()" [disabled]="lcForm.pristine">Revert</button>
 </form>
 
 <p>Form value: {{ lcForm.value | json }}</p>
+<p>Form status: {{ lcForm.status | json }}</p>

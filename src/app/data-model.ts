@@ -1,22 +1,3 @@
-export class LC {
-    lc_no : ReferenceNo;
-    lc_customer: Customer;
-    lc_amt: Amount;
-    lc_balance: Amount;
-}
-
-export class ReferenceNo {
-    id = '';
-    protect = false;
-    mandatory = true;
-}
-
-export class Amount {
-    amt = 0;
-    protect = false;
-    mandatory = false;
-}
-
 export class Customer {
     id = 0;
     name = '';
