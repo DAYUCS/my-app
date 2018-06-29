@@ -21,8 +21,8 @@ export class LcDetailComponent implements OnInit {
         console.log(JSON.stringify(data));
 
         // Calculate 'lc_balance + 200' before
-        data.lc_001 = data.lc_balance + 200;
-        this.lcForm.get('lc_001').setValue(data.lc_001, { emitEvent: false });
+        data.lc_balance_before = data.lc_balance;
+        this.lcForm.get('lc_balance_before').setValue(data.lc_balance_before, { emitEvent: false });
 
         // Calculate L/C Balance
         var tolerance = customers.find(value => (value.id == data.lc_customer_no)).tolerance;
@@ -30,8 +30,12 @@ export class LcDetailComponent implements OnInit {
         this.lcForm.get('lc_balance').setValue(data.lc_balance, { emitEvent: false });
 
         // Calculate 'lc_balance' + 200 after
-        data.lc_002 = data.lc_balance + 200;
-        this.lcForm.get('lc_002').setValue(data.lc_002, { emitEvent: false });
+        data.lc_balance_after= data.lc_balance;
+        this.lcForm.get('lc_balance_after').setValue(data.lc_balance_after, { emitEvent: false });
+
+        // Field does not show on page
+        data.lc_balance_hidden = data.lc_balance;
+        this.lcForm.get('lc_balance_hidden').setValue(data.lc_balance_hidden, { emitEvent: false });
       });
   }
 
@@ -40,12 +44,13 @@ export class LcDetailComponent implements OnInit {
 
   createFormGroup() {
     this.lcForm = this.fb.group({
-      lc_ref_no: ['', { required: true }],
+      lc_ref_no: ['IMLC-', { required: true }],
       lc_customer_no: 1,
       lc_amt: 0,
       lc_balance: [0, { readonly: true }],
-      lc_001: [0, { readonly: true }],
-      lc_002: [0, { readonly: true }]
+      lc_balance_before: [0, { readonly: true }],
+      lc_balance_after: [0, { readonly: true }],
+      lc_balance_hidden: [0, { readonly: true }]
     });
   }
 }
