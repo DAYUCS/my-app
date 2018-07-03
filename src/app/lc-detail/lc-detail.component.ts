@@ -16,34 +16,44 @@ export class LcDetailComponent implements OnInit {
   customers: Customer[] = [];
 
   constructor(private fb: FormBuilder, private cs: CustomerService) {
+    // Construct the Form
     this.createFormGroup();
 
+    // When user select defrent customer, call API to get new customer data
+    this.lcForm.get('lc_customer_no').valueChanges
+      .subscribe(id => this.getCustomer(id));
+
+    // Calculation Rules
     this.lcForm.valueChanges
       .subscribe(data => {
         console.log(JSON.stringify(data));
 
-        // Calculate 'lc_balance + 200' before
+        // Calculate lc_balance before
         data.lc_balance_before = data.lc_balance;
-        this.lcForm.get('lc_balance_before').setValue(data.lc_balance_before, { emitEvent: false });
 
         // Calculate L/C Balance
-        var tolerance = this.customers.find(value => (value.id == data.lc_customer_no)).tolerance;
-        data.lc_balance = data.lc_amt * (1 + tolerance / 100);
-        this.lcForm.get('lc_balance').setValue(data.lc_balance, { emitEvent: false });
+        data.lc_balance = data.lc_amt * (1 + data.lc_tolerance_hidden / 100);
 
-        // Calculate 'lc_balance' + 200 after
-        data.lc_balance_after= data.lc_balance;
-        this.lcForm.get('lc_balance_after').setValue(data.lc_balance_after, { emitEvent: false });
+        // Calculate lc_balance after
+        data.lc_balance_after = data.lc_balance;
 
-        // Field does not show on page
+        // Calculate Lc-balance does not show on page
         data.lc_balance_hidden = data.lc_balance;
-        this.lcForm.get('lc_balance_hidden').setValue(data.lc_balance_hidden, { emitEvent: false });
+
+        // Refresh Form
+        this.lcForm.patchValue({
+          lc_balance_before: data.lc_balance_before,
+          lc_balance: data.lc_balance,
+          lc_balance_after: data.lc_balance_after,
+          lc_balance_hidden: data.lc_balance_hidden
+        }, { emitEvent: false });
       });
+
   }
 
   ngOnInit() {
     this.cs.getCustomers()
-      .subscribe(customers => this.customers = customers.slice(0,10));
+      .subscribe(customers => this.customers = customers.slice(0, 10));
   }
 
   createFormGroup() {
@@ -54,7 +64,14 @@ export class LcDetailComponent implements OnInit {
       lc_balance: [0, { readonly: true }],
       lc_balance_before: [0, { readonly: true }],
       lc_balance_after: [0, { readonly: true }],
-      lc_balance_hidden: [0, { readonly: true }]
+      lc_balance_hidden: [0, { readonly: true }],
+      lc_tolerance_hidden: [1, { readonly: true }]
     });
+  }
+
+  getCustomer(id) {
+    this.cs.getCustomer(id)
+      .subscribe(customer =>
+        this.lcForm.get('lc_tolerance_hidden').patchValue(customer.tolerance));
   }
 }
