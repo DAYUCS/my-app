@@ -41,14 +41,8 @@ export class LcDetailComponent implements OnInit {
         data.lc_balance_hidden = data.lc_balance;
 
         // Refresh Form
-        this.lcForm.patchValue({
-          lc_balance_before: data.lc_balance_before,
-          lc_balance: data.lc_balance,
-          lc_balance_after: data.lc_balance_after,
-          lc_balance_hidden: data.lc_balance_hidden
-        }, { emitEvent: false });
+        this.lcForm.setValue(data, { emitEvent: false });
       });
-
   }
 
   ngOnInit() {
